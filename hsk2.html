@@ -4,11 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HSK 2급 어휘 그래프</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=Gowun+Batang:wght@700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=Gowun+Batang:wght@700&family=Noto+Serif+SC:wght@400;500;600&display=swap">
 <style>
   :root{
+    --ground:#f2f4fa; --panel:rgba(255,255,255,.93); --line:#d6dcec;
+    --ink:#1d2437; --muted:#5c6680; --dim:#8b94ad; --accent:#3b6fe0;
+    --hover:#e4e9f6; --field:#ffffff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0e1220; --panel:rgba(21,26,42,.94); --line:#28304d;
+      --ink:#e8ebf5; --muted:#8e97b2; --dim:#5d668a; --accent:#8ab4ff;
+      --hover:#232c4a; --field:#0c1020;
+    }
+  }
+  :root[data-theme="dark"]{
     --ground:#0e1220; --panel:rgba(21,26,42,.94); --line:#28304d;
     --ink:#e8ebf5; --muted:#8e97b2; --dim:#5d668a; --accent:#8ab4ff;
+    --hover:#232c4a; --field:#0c1020;
   }
   html,body{height:100%;}
   body{margin:0; background:var(--ground); color:var(--ink);
@@ -21,17 +34,17 @@
   #brand p{margin:0; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums;}
   #controls{top:76px; left:20px; width:226px; display:flex; flex-direction:column; gap:10px; max-height:calc(100% - 100px);}
   .box{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px;}
-  #search{width:100%; box-sizing:border-box; background:#0c1020; border:1px solid var(--line); border-radius:8px; color:var(--ink); padding:8px 10px; font:inherit; font-size:13px;}
+  #search{width:100%; box-sizing:border-box; background:var(--field); border:1px solid var(--line); border-radius:8px; color:var(--ink); padding:8px 10px; font:inherit; font-size:13px;}
   #search::placeholder{color:var(--dim);}
   #search:focus{outline:2px solid var(--accent); outline-offset:1px; border-color:transparent;}
   #hits{margin-top:6px; font-size:12.5px; max-height:150px; overflow-y:auto;}
   #hits button{display:block; width:100%; text-align:left; background:none; border:0; color:var(--ink); padding:4px 6px; border-radius:6px; cursor:pointer; font:inherit; font-size:12.5px;}
-  #hits button:hover,#hits button:focus-visible{background:#232c4a; outline:none;}
+  #hits button:hover,#hits button:focus-visible{background:var(--hover); outline:none;}
   #hits .py{color:var(--muted);}
   .boxlabel{font-size:10.5px; letter-spacing:.14em; color:var(--dim); text-transform:uppercase; margin:0 0 8px;}
   #legend{overflow-y:auto; flex:1; min-height:0;}
   .chip{display:flex; align-items:center; gap:7px; width:100%; background:none; border:0; color:var(--ink); font:inherit; font-size:12.5px; padding:3px 6px; border-radius:6px; cursor:pointer; text-align:left;}
-  .chip:hover,.chip:focus-visible{background:#232c4a; outline:none;}
+  .chip:hover,.chip:focus-visible{background:var(--hover); outline:none;}
   .chip .dot{width:9px; height:9px; border-radius:50%; flex:none;}
   .chip .n{margin-left:auto; color:var(--dim); font-size:11px; font-variant-numeric:tabular-nums;}
   .chip.off{opacity:.32;}
@@ -44,14 +57,15 @@
   #hint{position:fixed; left:20px; bottom:14px; font-size:11.5px; color:var(--dim); z-index:5; pointer-events:none;}
   #panel{position:fixed; top:18px; right:18px; width:272px; max-height:calc(100% - 36px); background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px; z-index:6; display:none; overflow-y:auto; box-sizing:border-box;}
   #panel.on{display:block;}
-  #panel .zi{font-size:38px; line-height:1.1; font-weight:600;}
+  #panel .zi{font-size:38px; line-height:1.1; font-weight:600; font-family:SimSun,'宋体','Songti SC','Noto Serif SC',serif;}
   #panel .py{color:var(--accent); font-size:15px; margin-top:2px;}
   #panel .mean{font-size:14px; margin-top:6px;}
   #panel .cl{display:inline-flex; align-items:center; gap:6px; font-size:11.5px; color:var(--muted); margin-top:10px;}
   #panel .cl .dot{width:8px; height:8px; border-radius:50%;}
   #panel h3{font-size:10.5px; letter-spacing:.14em; color:var(--dim); text-transform:uppercase; margin:16px 0 6px;}
   #panel .lk{display:flex; gap:8px; align-items:baseline; width:100%; background:none; border:0; color:var(--ink); font:inherit; font-size:13px; padding:3px 4px; border-radius:6px; cursor:pointer; text-align:left;}
-  #panel .lk:hover,#panel .lk:focus-visible{background:#232c4a; outline:none;}
+  #panel .lk:hover,#panel .lk:focus-visible{background:var(--hover); outline:none;}
+  #panel .lk span:first-child{font-family:SimSun,'宋体','Songti SC','Noto Serif SC',serif;}
   #panel .lk .m{color:var(--muted); font-size:11.5px;}
   #panel .lk .via{margin-left:auto; color:var(--dim); font-size:11px;}
   #close{position:absolute; top:10px; right:10px; background:none; border:0; color:var(--dim); font-size:16px; cursor:pointer; padding:4px; font-family:inherit;}
@@ -99,10 +113,40 @@
 
 <script>
 const G = {"level":"2급","clusters":["기능어","행위·동작","사물·개념","자연·환경","성질·상태","교통·여행","음식·요리","교육·학술","시간·때","장소·공간","가족·사람","신체·건강"],"nodes":[{"id":"啊","py":"a","m":"감탄","c":0,"x":294,"y":-96,"deg":1,"r":5.9},{"id":"爱好","py":"àihào","m":"좋아하다","c":1,"x":59,"y":152,"deg":2,"r":6.5},{"id":"白色","py":"báisè","m":"흰색","c":2,"x":129,"y":355,"deg":22,"r":12.2},{"id":"班","py":"bān","m":"반","c":2,"x":140,"y":398,"deg":1,"r":5.9},{"id":"帮","py":"bāng","m":"돕다","c":1,"x":505,"y":210,"deg":1,"r":5.9},{"id":"帮忙","py":"bāngmáng","m":"도와주다","c":1,"x":511,"y":245,"deg":1,"r":5.9},{"id":"包","py":"bāo","m":"싸다","c":1,"x":72,"y":7,"deg":1,"r":5.9},{"id":"本子","py":"běnzi","m":"공책","c":2,"x":99,"y":341,"deg":1,"r":5.9},{"id":"比","py":"bǐ","m":"비교하다","c":3,"x":-24,"y":477,"deg":1,"r":5.9},{"id":"笔","py":"bǐ","m":"펜","c":2,"x":117,"y":387,"deg":1,"r":5.9},{"id":"别","py":"bié","m":"~하지 마라","c":0,"x":387,"y":-85,"deg":1,"r":5.9},{"id":"不错","py":"búcuò","m":"괜찮다","c":4,"x":-248,"y":447,"deg":1,"r":5.9},{"id":"不好意思","py":"bù hǎoyìsi","m":"죄송합니다","c":2,"x":222,"y":356,"deg":2,"r":6.5},{"id":"长","py":"cháng","m":"길다","c":4,"x":-195,"y":354,"deg":1,"r":5.9},{"id":"车站","py":"chēzhàn","m":"정류장","c":5,"x":-332,"y":221,"deg":3,"r":7},{"id":"出","py":"chū","m":"나가다","c":1,"x":312,"y":190,"deg":4,"r":7.4},{"id":"出国","py":"chūguó","m":"출국하다","c":1,"x":255,"y":202,"deg":2,"r":6.5},{"id":"出来","py":"chūlái","m":"나오다","c":1,"x":344,"y":140,"deg":22,"r":12.2},{"id":"出门","py":"chūmén","m":"외출하다","c":1,"x":252,"y":175,"deg":2,"r":6.5},{"id":"出去","py":"chūqù","m":"나가다","c":1,"x":309,"y":235,"deg":6,"r":8.2},{"id":"床","py":"chuáng","m":"침대","c":2,"x":129,"y":317,"deg":1,"r":5.9},{"id":"词","py":"cí","m":"단어","c":2,"x":162,"y":385,"deg":1,"r":5.9},{"id":"次","py":"cì","m":"번","c":2,"x":95,"y":401,"deg":1,"r":5.9},{"id":"从","py":"cóng","m":"~부터","c":0,"x":364,"y":-97,"deg":1,"r":5.9},{"id":"从小","py":"cóngxiǎo","m":"어릴 때부터","c":0,"x":334,"y":-90,"deg":17,"r":11.3},{"id":"错","py":"cuò","m":"틀리다","c":4,"x":-268,"y":418,"deg":1,"r":5.9},{"id":"打","py":"dǎ","m":"때리다","c":1,"x":71,"y":83,"deg":2,"r":6.5},{"id":"打车","py":"dǎchē","m":"택시를 타다","c":5,"x":-267,"y":192,"deg":2,"r":6.5},{"id":"打开","py":"dǎkāi","m":"열다","c":1,"x":122,"y":71,"deg":3,"r":7},{"id":"但","py":"dàn","m":"하지만","c":0,"x":387,"y":-59,"deg":1,"r":5.9},{"id":"但是","py":"dànshì","m":"하지만","c":0,"x":340,"y":-51,"deg":1,"r":5.9},{"id":"得","py":"de","m":"정도보어/가능보어를 연결…","c":0,"x":386,"y":-110,"deg":1,"r":5.9},{"id":"地","py":"de","m":"~하게(부사어를 연결하는…","c":3,"x":-51,"y":488,"deg":1,"r":5.9},{"id":"等","py":"děng","m":"기다리다","c":1,"x":346,"y":108,"deg":1,"r":5.9},{"id":"地铁","py":"dìtiě","m":"지하철","c":5,"x":-183,"y":150,"deg":1,"r":5.9},{"id":"点","py":"diǎn","m":"주문하다","c":1,"x":325,"y":166,"deg":1,"r":5.9},{"id":"懂","py":"dǒng","m":"이해하다","c":1,"x":365,"y":90,"deg":1,"r":5.9},{"id":"动","py":"dòng","m":"움직이다","c":1,"x":182,"y":93,"deg":1,"r":5.9},{"id":"饭馆","py":"fànguǎn","m":"음식점","c":6,"x":-367,"y":-15,"deg":1,"r":5.9},{"id":"飞","py":"fēi","m":"날다","c":1,"x":371,"y":115,"deg":1,"r":5.9},{"id":"高","py":"gāo","m":"높다","c":4,"x":-271,"y":102,"deg":1,"r":5.9},{"id":"高中","py":"gāozhōng","m":"고등학교","c":7,"x":-325,"y":-137,"deg":2,"r":6.5},{"id":"告诉","py":"gàosu","m":"말하다","c":1,"x":211,"y":123,"deg":1,"r":5.9},{"id":"个子","py":"gèzi","m":"키","c":2,"x":100,"y":368,"deg":1,"r":5.9},{"id":"跟","py":"gēn","m":"~와/과 함께","c":0,"x":366,"y":-126,"deg":1,"r":5.9},{"id":"公交车","py":"gōngjiāochē","m":"버스","c":5,"x":-373,"y":242,"deg":1,"r":5.9},{"id":"过","py":"guò","m":"지나다","c":1,"x":258,"y":74,"deg":2,"r":6.5},{"id":"过来","py":"guòlái","m":"이리 오다","c":1,"x":417,"y":156,"deg":1,"r":5.9},{"id":"过年","py":"guònián","m":"설을 쇠다","c":8,"x":-147,"y":-331,"deg":1,"r":5.9},{"id":"过去","py":"guòqù","m":"지나가다","c":1,"x":341,"y":270,"deg":1,"r":5.9},{"id":"过","py":"guo","m":"~한 적 있다(경험 조사)","c":0,"x":344,"y":18,"deg":2,"r":6.5},{"id":"还是","py":"háishi","m":"여전히","c":0,"x":312,"y":-114,"deg":1,"r":5.9},{"id":"黑色","py":"hēisè","m":"검은색","c":2,"x":153,"y":309,"deg":1,"r":5.9},{"id":"红茶","py":"hóngchá","m":"홍차","c":6,"x":-253,"y":69,"deg":3,"r":7},{"id":"红色","py":"hóngsè","m":"빨간색","c":2,"x":49,"y":292,"deg":2,"r":6.5},{"id":"后面","py":"hòumiàn","m":"뒤쪽","c":6,"x":-371,"y":-40,"deg":1,"r":5.9},{"id":"花","py":"huā","m":"(돈을) 쓰다","c":3,"x":0,"y":523,"deg":1,"r":5.9},{"id":"花","py":"huā","m":"꽃","c":3,"x":-69,"y":410,"deg":1,"r":5.9},{"id":"画","py":"huà","m":"그리다","c":1,"x":395,"y":168,"deg":1,"r":5.9},{"id":"坏","py":"huài","m":"나쁘다","c":4,"x":-204,"y":379,"deg":1,"r":5.9},{"id":"回来","py":"huílái","m":"돌아오다","c":1,"x":401,"y":193,"deg":2,"r":6.5},{"id":"回去","py":"huíqù","m":"돌아가다","c":1,"x":368,"y":236,"deg":2,"r":6.5},{"id":"机场","py":"jīchǎng","m":"공항","c":5,"x":-300,"y":189,"deg":3,"r":7},{"id":"机票","py":"jīpiào","m":"항공권","c":5,"x":-339,"y":165,"deg":2,"r":6.5},{"id":"记得","py":"jìde","m":"기억하다","c":1,"x":322,"y":101,"deg":1,"r":5.9},{"id":"间","py":"jiān","m":"칸","c":2,"x":188,"y":0,"deg":1,"r":5.9},{"id":"教","py":"jiāo","m":"가르치다","c":7,"x":-246,"y":-270,"deg":1,"r":5.9},{"id":"教室","py":"jiàoshì","m":"교실","c":9,"x":-79,"y":-361,"deg":1,"r":5.9},{"id":"介绍","py":"jièshào","m":"소개하다","c":1,"x":373,"y":154,"deg":1,"r":5.9},{"id":"进","py":"jìn","m":"들어가다","c":1,"x":413,"y":249,"deg":2,"r":6.5},{"id":"近","py":"jìn","m":"가깝다","c":4,"x":-154,"y":293,"deg":1,"r":5.9},{"id":"进来","py":"jìnlái","m":"들어오다","c":1,"x":376,"y":205,"deg":2,"r":6.5},{"id":"进去","py":"jìnqù","m":"들어가다","c":1,"x":369,"y":263,"deg":2,"r":6.5},{"id":"经常","py":"jīngcháng","m":"자주","c":0,"x":503,"y":-38,"deg":1,"r":5.9},{"id":"酒店","py":"jiǔdiàn","m":"호텔","c":6,"x":-170,"y":-174,"deg":1,"r":5.9},{"id":"就","py":"jiù","m":"바로","c":0,"x":340,"y":-123,"deg":1,"r":5.9},{"id":"咖啡","py":"kāfēi","m":"커피","c":2,"x":163,"y":359,"deg":1,"r":5.9},{"id":"开始","py":"kāishǐ","m":"시작하다","c":1,"x":147,"y":126,"deg":2,"r":6.5},{"id":"开学","py":"kāixué","m":"개학하다","c":7,"x":-87,"y":-73,"deg":1,"r":5.9},{"id":"考","py":"kǎo","m":"시험을 보다","c":7,"x":-382,"y":-221,"deg":1,"r":5.9},{"id":"考试","py":"kǎoshì","m":"시험을 보다","c":7,"x":-355,"y":-244,"deg":1,"r":5.9},{"id":"可能","py":"kěnéng","m":"가능하다","c":4,"x":-195,"y":316,"deg":1,"r":5.9},{"id":"裤子","py":"kùzi","m":"바지","c":2,"x":118,"y":413,"deg":1,"r":5.9},{"id":"快","py":"kuài","m":"빠르다","c":4,"x":-164,"y":340,"deg":8,"r":8.9},{"id":"快乐","py":"kuàilè","m":"즐겁다","c":4,"x":-153,"y":380,"deg":1,"r":5.9},{"id":"快要","py":"kuàiyào","m":"곧 ~하려고 하다","c":0,"x":37,"y":113,"deg":1,"r":5.9},{"id":"篮球","py":"lánqiú","m":"농구","c":3,"x":-26,"y":451,"deg":1,"r":5.9},{"id":"累","py":"lèi","m":"피곤하다","c":4,"x":-179,"y":374,"deg":1,"r":5.9},{"id":"离","py":"lí","m":"~에서 떨어져 있다","c":1,"x":-85,"y":197,"deg":2,"r":6.5},{"id":"里面","py":"lǐmiàn","m":"안쪽","c":6,"x":-351,"y":-57,"deg":1,"r":5.9},{"id":"楼","py":"lóu","m":"빌딩","c":9,"x":-5,"y":-369,"deg":1,"r":5.9},{"id":"路","py":"lù","m":"길","c":5,"x":-189,"y":176,"deg":2,"r":6.5},{"id":"路上","py":"lùshang","m":"길 위","c":5,"x":-119,"y":153,"deg":7,"r":8.6},{"id":"旅游","py":"lǚyóu","m":"여행하다","c":5,"x":-216,"y":179,"deg":3,"r":7},{"id":"绿茶","py":"lǜchá","m":"녹차","c":6,"x":-204,"y":81,"deg":2,"r":6.5},{"id":"绿色","py":"lǜsè","m":"녹색","c":2,"x":70,"y":309,"deg":2,"r":6.5},{"id":"慢","py":"màn","m":"느리다","c":4,"x":-213,"y":334,"deg":1,"r":5.9},{"id":"没意思","py":"méi yìsi","m":"재미없다","c":2,"x":231,"y":458,"deg":1,"r":5.9},{"id":"每","py":"měi","m":"매~","c":2,"x":78,"y":382,"deg":1,"r":5.9},{"id":"门","py":"mén","m":"문","c":2,"x":75,"y":205,"deg":3,"r":7},{"id":"门口","py":"ménkǒu","m":"입구","c":2,"x":102,"y":176,"deg":1,"r":5.9},{"id":"门票","py":"ménpiào","m":"입장권","c":5,"x":-223,"y":153,"deg":2,"r":6.5},{"id":"面","py":"miàn","m":"~쪽","c":6,"x":-307,"y":-23,"deg":9,"r":9.2},{"id":"名","py":"míng","m":"이름","c":2,"x":125,"y":479,"deg":1,"r":5.9},{"id":"拿","py":"ná","m":"지니다","c":1,"x":397,"y":116,"deg":1,"r":5.9},{"id":"那么","py":"nàme","m":"그렇게","c":0,"x":477,"y":150,"deg":2,"r":6.5},{"id":"那样","py":"nàyàng","m":"그런","c":2,"x":112,"y":283,"deg":1,"r":5.9},{"id":"奶茶","py":"nǎichá","m":"밀크티","c":6,"x":-326,"y":44,"deg":2,"r":6.5},{"id":"奶奶","py":"nǎinai","m":"할머니","c":6,"x":-382,"y":37,"deg":1,"r":5.9},{"id":"男孩儿","py":"nánháir","m":"남자아이","c":10,"x":205,"y":-323,"deg":4,"r":7.4},{"id":"鸟","py":"niǎo","m":"새","c":2,"x":176,"y":321,"deg":1,"r":5.9},{"id":"女孩儿","py":"nǚháir","m":"여자아이","c":10,"x":185,"y":-360,"deg":1,"r":5.9},{"id":"旁边","py":"pángbiān","m":"옆","c":2,"x":293,"y":485,"deg":2,"r":6.5},{"id":"跑","py":"pǎo","m":"달리다","c":1,"x":483,"y":292,"deg":1,"r":5.9},{"id":"跑步","py":"pǎobù","m":"조깅하다","c":1,"x":452,"y":310,"deg":1,"r":5.9},{"id":"票","py":"piào","m":"표","c":5,"x":-294,"y":156,"deg":2,"r":6.5},{"id":"妻子","py":"qīzi","m":"아내","c":2,"x":141,"y":424,"deg":1,"r":5.9},{"id":"起来","py":"qǐlái","m":"일어나다","c":1,"x":391,"y":90,"deg":2,"r":6.5},{"id":"前面","py":"qiánmiàn","m":"앞쪽","c":6,"x":-326,"y":-62,"deg":1,"r":5.9},{"id":"晴","py":"qíng","m":"맑다","c":4,"x":-282,"y":390,"deg":1,"r":5.9},{"id":"球","py":"qiú","m":"공","c":3,"x":-59,"y":448,"deg":6,"r":8.2},{"id":"让","py":"ràng","m":"~하게 하다","c":1,"x":347,"y":188,"deg":1,"r":5.9},{"id":"肉","py":"ròu","m":"고기","c":6,"x":-347,"y":-31,"deg":1,"r":5.9},{"id":"商场","py":"shāngchǎng","m":"쇼핑몰","c":5,"x":-350,"y":192,"deg":1,"r":5.9},{"id":"上来","py":"shànglái","m":"올라오다","c":1,"x":239,"y":139,"deg":2,"r":6.5},{"id":"上面","py":"shàngmiàn","m":"위쪽","c":6,"x":-277,"y":22,"deg":2,"r":6.5},{"id":"上去","py":"shàngqù","m":"올라가다","c":1,"x":209,"y":209,"deg":2,"r":6.5},{"id":"上网","py":"shàngwǎng","m":"인터넷을 하다","c":1,"x":58,"y":179,"deg":2,"r":6.5},{"id":"身体","py":"shēntǐ","m":"몸","c":11,"x":245,"y":-280,"deg":1,"r":5.9},{"id":"生日","py":"shēngrì","m":"생일","c":8,"x":-136,"y":-282,"deg":1,"r":5.9},{"id":"时","py":"shí","m":"시(時)","c":8,"x":-93,"y":-294,"deg":5,"r":7.9},{"id":"事情","py":"shìqing","m":"일","c":2,"x":154,"y":335,"deg":1,"r":5.9},{"id":"手","py":"shǒu","m":"손","c":11,"x":300,"y":-241,"deg":2,"r":6.5},{"id":"手表","py":"shǒubiǎo","m":"손목시계","c":11,"x":338,"y":-269,"deg":1,"r":5.9},{"id":"书包","py":"shūbāo","m":"가방","c":7,"x":-155,"y":-111,"deg":1,"r":5.9},{"id":"舒服","py":"shūfu","m":"편안하다","c":4,"x":-220,"y":359,"deg":1,"r":5.9},{"id":"送","py":"sòng","m":"보내다","c":1,"x":419,"y":130,"deg":1,"r":5.9},{"id":"虽然","py":"suīrán","m":"비록 ~이지만","c":3,"x":-84,"y":474,"deg":1,"r":5.9},{"id":"所以","py":"suǒyǐ","m":"그래서","c":9,"x":20,"y":-375,"deg":1,"r":5.9},{"id":"疼","py":"téng","m":"아프다","c":11,"x":322,"y":-203,"deg":1,"r":5.9},{"id":"踢","py":"tī","m":"차다","c":1,"x":310,"y":124,"deg":1,"r":5.9},{"id":"题","py":"tí","m":"문제","c":7,"x":-336,"y":-182,"deg":1,"r":5.9},{"id":"条","py":"tiáo","m":"(긴 것의) 양사","c":2,"x":163,"y":410,"deg":1,"r":5.9},{"id":"跳舞","py":"tiàowǔ","m":"춤을 추다","c":1,"x":63,"y":109,"deg":2,"r":6.5},{"id":"头","py":"tóu","m":"머리","c":11,"x":323,"y":-229,"deg":1,"r":5.9},{"id":"外国","py":"wàiguó","m":"외국","c":2,"x":36,"y":139,"deg":2,"r":6.5},{"id":"外面","py":"wàimiàn","m":"바깥쪽","c":6,"x":-251,"y":-3,"deg":2,"r":6.5},{"id":"完","py":"wán","m":"끝내다","c":1,"x":372,"y":179,"deg":1,"r":5.9},{"id":"万","py":"wàn","m":"만(10000)","c":2,"x":78,"y":355,"deg":1,"r":5.9},{"id":"往","py":"wǎng","m":"~을 향해 가다","c":0,"x":409,"y":-72,"deg":1,"r":5.9},{"id":"网上","py":"wǎngshang","m":"온라인","c":2,"x":-2,"y":233,"deg":2,"r":6.5},{"id":"忘","py":"wàng","m":"잊다","c":1,"x":340,"y":83,"deg":1,"r":5.9},{"id":"位","py":"wèi","m":"~분(존칭 양사)","c":2,"x":185,"y":397,"deg":1,"r":5.9},{"id":"为什么","py":"wèi shénme","m":"왜","c":2,"x":361,"y":324,"deg":1,"r":5.9},{"id":"希望","py":"xīwàng","m":"희망하다","c":1,"x":177,"y":162,"deg":2,"r":6.5},{"id":"洗","py":"xǐ","m":"씻다","c":1,"x":256,"y":-38,"deg":1,"r":5.9},{"id":"洗手间","py":"xǐshǒujiān","m":"화장실","c":11,"x":283,"y":-194,"deg":6,"r":8.2},{"id":"下来","py":"xiàlái","m":"내려오다","c":1,"x":264,"y":122,"deg":3,"r":7},{"id":"下面","py":"xiàmiàn","m":"아래쪽","c":6,"x":-205,"y":-3,"deg":2,"r":6.5},{"id":"下去","py":"xiàqù","m":"내려가다","c":1,"x":284,"y":184,"deg":2,"r":6.5},{"id":"小孩儿","py":"xiǎoháir","m":"어린이","c":10,"x":223,"y":-266,"deg":2,"r":6.5},{"id":"小时候","py":"xiǎoshíhou","m":"어린 시절","c":8,"x":-4,"y":-244,"deg":2,"r":6.5},{"id":"笑","py":"xiào","m":"웃다","c":1,"x":396,"y":142,"deg":1,"r":5.9},{"id":"姓","py":"xìng","m":"성(姓)","c":1,"x":281,"y":332,"deg":1,"r":5.9},{"id":"姓名","py":"xìngmíng","m":"성명","c":2,"x":169,"y":471,"deg":2,"r":6.5},{"id":"颜色","py":"yánsè","m":"색깔","c":2,"x":185,"y":345,"deg":1,"r":5.9},{"id":"眼睛","py":"yǎnjing","m":"눈","c":11,"x":272,"y":-228,"deg":1,"r":5.9},{"id":"药","py":"yào","m":"약","c":11,"x":183,"y":-274,"deg":2,"r":6.5},{"id":"药店","py":"yàodiàn","m":"약국","c":9,"x":15,"y":-330,"deg":4,"r":7.4},{"id":"爷爷","py":"yéye","m":"할아버지","c":10,"x":166,"y":-333,"deg":1,"r":5.9},{"id":"一会儿","py":"yíhuìr","m":"잠깐","c":10,"x":216,"y":-362,"deg":1,"r":5.9},{"id":"已经","py":"yǐjīng","m":"이미","c":0,"x":516,"y":-7,"deg":1,"r":5.9},{"id":"一起","py":"yìqǐ","m":"함께","c":0,"x":428,"y":1,"deg":1,"r":5.9},{"id":"意思","py":"yìsi","m":"의미","c":2,"x":245,"y":411,"deg":3,"r":7},{"id":"阴","py":"yīn","m":"흐리다","c":4,"x":-292,"y":360,"deg":1,"r":5.9},{"id":"因为","py":"yīnwèi","m":"~때문에","c":0,"x":409,"y":-98,"deg":1,"r":5.9},{"id":"游","py":"yóu","m":"헤엄치다","c":5,"x":-161,"y":135,"deg":2,"r":6.5},{"id":"游泳","py":"yóuyǒng","m":"수영하다","c":5,"x":-66,"y":126,"deg":3,"r":7},{"id":"有意思","py":"yǒu yìsi","m":"재미있다","c":2,"x":256,"y":453,"deg":1,"r":5.9},{"id":"有时","py":"yǒushí","m":"때때로","c":8,"x":-136,"y":-308,"deg":1,"r":5.9},{"id":"右","py":"yòu","m":"오른쪽","c":2,"x":340,"y":428,"deg":1,"r":5.9},{"id":"右边","py":"yòubian","m":"오른쪽","c":2,"x":325,"y":464,"deg":2,"r":6.5},{"id":"鱼","py":"yú","m":"물고기","c":6,"x":-347,"y":1,"deg":1,"r":5.9},{"id":"远","py":"yuǎn","m":"멀다","c":4,"x":-125,"y":256,"deg":2,"r":6.5},{"id":"运动","py":"yùndòng","m":"운동하다","c":1,"x":133,"y":97,"deg":2,"r":6.5},{"id":"站","py":"zhàn","m":"역","c":5,"x":-382,"y":215,"deg":1,"r":5.9},{"id":"丈夫","py":"zhàngfu","m":"남편","c":2,"x":186,"y":371,"deg":1,"r":5.9},{"id":"这么","py":"zhème","m":"이렇게","c":2,"x":391,"y":334,"deg":1,"r":5.9},{"id":"这样","py":"zhèyàng","m":"이런","c":2,"x":113,"y":253,"deg":1,"r":5.9},{"id":"着","py":"zhe","m":"~하는 중(진행 조사)","c":0,"x":365,"y":-71,"deg":1,"r":5.9},{"id":"正","py":"zhèng","m":"바로","c":0,"x":307,"y":-64,"deg":1,"r":5.9},{"id":"周","py":"zhōu","m":"주(週)","c":8,"x":-121,"y":-329,"deg":1,"r":5.9},{"id":"准备","py":"zhǔnbèi","m":"준비하다","c":3,"x":111,"y":200,"deg":2,"r":6.5},{"id":"自己","py":"zìjǐ","m":"자신","c":2,"x":103,"y":315,"deg":1,"r":5.9},{"id":"走","py":"zǒu","m":"가다","c":1,"x":7,"y":158,"deg":1,"r":5.9},{"id":"走路","py":"zǒulù","m":"걸어가다","c":5,"x":-238,"y":196,"deg":2,"r":6.5},{"id":"足球","py":"zúqiú","m":"축구","c":3,"x":-44,"y":416,"deg":1,"r":5.9},{"id":"最","py":"zuì","m":"가장","c":0,"x":365,"y":-45,"deg":1,"r":5.9},{"id":"左","py":"zuǒ","m":"왼쪽","c":2,"x":300,"y":406,"deg":1,"r":5.9},{"id":"左边","py":"zuǒbian","m":"왼쪽","c":2,"x":293,"y":445,"deg":2,"r":6.5}],"links":[[1,12,0,"好"],[2,52,1,"色"],[2,54,1,"色"],[2,95,1,"色"],[2,165,1,"色"],[4,5,1,"帮"],[6,134,0,"包"],[25,11,1,"错"],[173,12,1,"意"],[173,97,1,"意"],[173,178,1,"意"],[14,27,1,"车"],[14,45,1,"车"],[185,14,1,"站"],[15,16,1,"出"],[15,17,1,"出"],[15,18,1,"出"],[15,19,1,"出"],[16,145,0,"国"],[17,47,1,"来"],[17,60,1,"来"],[17,71,1,"来"],[17,117,1,"来"],[17,124,1,"来"],[17,157,1,"来"],[99,18,0,"门"],[99,100,1,"门"],[99,101,0,"门"],[19,49,1,"去"],[19,61,1,"去"],[19,72,1,"去"],[19,126,1,"去"],[19,159,1,"去"],[23,24,1,"从"],[24,160,0,"小"],[24,161,0,"小"],[26,27,0,"打"],[26,28,1,"打"],[28,77,1,"开"],[28,78,0,"开"],[37,184,1,"动"],[40,41,0,"高"],[53,54,0,"红"],[53,94,1,"茶"],[53,107,1,"茶"],[102,55,1,"面"],[102,89,1,"面"],[102,118,1,"面"],[102,125,1,"面"],[102,146,1,"面"],[102,158,1,"面"],[60,61,1,"回"],[62,63,1,"机"],[62,123,1,"场"],[115,63,1,"票"],[115,101,1,"票"],[65,156,0,"间"],[66,67,0,"教"],[69,71,1,"进"],[69,72,1,"进"],[73,171,1,"经"],[74,168,0,"店"],[79,80,1,"考"],[83,84,1,"快"],[83,85,0,"快"],[120,86,1,"球"],[120,196,1,"球"],[91,92,1,"路"],[91,195,1,"路"],[92,124,0,"上"],[92,125,0,"上"],[92,126,0,"上"],[92,127,0,"上"],[92,150,0,"上"],[176,93,1,"游"],[176,177,1,"游"],[94,95,0,"绿"],[103,164,1,"名"],[105,153,0,"么"],[105,187,0,"么"],[106,188,1,"样"],[107,108,1,"奶"],[109,111,1,"孩"],[109,160,1,"孩"],[112,181,1,"边"],[112,199,1,"边"],[113,114,1,"跑"],[117,172,0,"起"],[127,150,0,"网"],[130,161,1,"时"],[130,179,1,"时"],[132,133,1,"手"],[132,156,1,"手"],[145,146,0,"外"],[155,156,0,"洗"],[157,158,0,"下"],[157,159,1,"下"],[163,164,0,"姓"],[167,168,0,"药"],[180,181,1,"右"],[194,195,0,"走"],[198,199,1,"左"],[1,177,1,""],[177,143,1,""],[143,184,1,""],[119,174,1,""],[62,93,1,""],[93,88,1,""],[88,183,1,""],[183,70,1,""],[42,154,1,""],[154,192,1,""],[192,77,1,""],[167,128,1,""],[0,24,2,""],[3,2,2,""],[7,2,2,""],[8,120,2,""],[9,2,2,""],[10,24,2,""],[13,83,2,""],[20,2,2,""],[21,2,2,""],[22,2,2,""],[29,24,2,""],[30,24,2,""],[31,24,2,""],[32,120,2,""],[33,17,2,""],[34,92,2,""],[35,17,2,""],[36,17,2,""],[38,102,2,""],[39,17,2,""],[43,2,2,""],[44,24,2,""],[50,17,2,""],[48,130,2,""],[50,24,2,""],[51,24,2,""],[57,120,2,""],[58,17,2,""],[59,83,2,""],[64,17,2,""],[68,17,2,""],[75,24,2,""],[76,2,2,""],[81,83,2,""],[82,2,2,""],[87,83,2,""],[90,168,2,""],[96,83,2,""],[98,2,2,""],[104,17,2,""],[110,2,2,""],[116,2,2,""],[121,17,2,""],[122,102,2,""],[129,130,2,""],[131,2,2,""],[135,83,2,""],[136,17,2,""],[137,120,2,""],[138,168,2,""],[139,156,2,""],[140,17,2,""],[141,41,2,""],[142,2,2,""],[144,156,2,""],[147,17,2,""],[148,2,2,""],[149,24,2,""],[151,17,2,""],[152,2,2,""],[162,17,2,""],[166,156,2,""],[169,109,2,""],[170,109,2,""],[175,24,2,""],[182,102,2,""],[186,2,2,""],[189,24,2,""],[190,24,2,""],[191,130,2,""],[193,2,2,""],[197,24,2,""]]};
-const PAL = ['#7fb2ff','#ffd166','#ff8fa3','#b7a6ff','#ffa96b','#6fe3c1','#8ee08e','#68d5f2','#f2c8ff','#ffde8f','#f97f9f','#9adcff','#d9c79e','#c5ef7e','#a3b7ff','#9aa5bd','#ff9d7a','#7ee0a8','#e0b7ff','#ffc4a3','#a8e6e0','#d7d78f'];
+const PAL_DARK = ['#7fb2ff','#ffd166','#ff8fa3','#b7a6ff','#ffa96b','#6fe3c1','#8ee08e','#68d5f2','#f2c8ff','#ffde8f','#f97f9f','#9adcff','#d9c79e','#c5ef7e','#a3b7ff','#9aa5bd','#ff9d7a','#7ee0a8','#e0b7ff','#ffc4a3','#a8e6e0','#d7d78f'];
+const PAL_LIGHT = ['#2f6fd0','#c08600','#d64d67','#7a5cd6','#d0731f','#0f9f7d','#3d9c3d','#0a92b8','#b45fd0','#b8931a','#d6486e','#2b8fc7','#9a7f43','#79a30f','#5b74d6','#5d6880','#d65f33','#1d9e63','#a266d6','#c26a3a','#2f9e94','#8f8f2a'];
+
+const THEMES = {
+  dark:  { ground:'#0e1220', pal:PAL_DARK,  label:'#c9d1e8', stroke:'#0e1220',
+           strong:'95,126,203', loose:'70,80,122', dimFill:'rgba(14,18,32,0.86)', ring:'#ffffff' },
+  light: { ground:'#f2f4fa', pal:PAL_LIGHT, label:'#39425e', stroke:'#f2f4fa',
+           strong:'70,100,185', loose:'125,135,165', dimFill:'rgba(242,244,250,0.86)', ring:'#1d2437' },
+};
+let T = THEMES.dark;
+const mqDark = matchMedia('(prefers-color-scheme: dark)');
+function themeName(){
+  const forced = document.documentElement.getAttribute('data-theme');
+  if (forced === 'dark') return 'dark';
+  if (forced === 'light') return 'light';
+  return mqDark.matches ? 'dark' : 'light';
+}
+function applyTheme(){ T = THEMES[themeName()]; refreshLegendColors(); if(selected>=0) paintPanelDot(); draw(); }
+try{ mqDark.addEventListener('change', applyTheme); }catch(e){ mqDark.addListener(applyTheme); }
+new MutationObserver(applyTheme).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+const PAL = i => T.pal[i % T.pal.length];
+
 const N = G.nodes, L = G.links;
 const adj = N.map(()=>[]);
-L.forEach(([a,b,k,ch],i)=>{adj[a].push({o:b,k,ch}); adj[b].push({o:a,k,ch});});
+L.forEach(([a,b,k,ch])=>{adj[a].push({o:b,k,ch}); adj[b].push({o:a,k,ch});});
+
+/* 부유 애니메이션 파라미터 */
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+N.forEach((n,i)=>{ n.ph = (i*2654435761 % 6283)/1000; n.ph2 = (i*40503 % 6283)/1000;
+                   n.amp = 1.2 + (n.r/12)*1.6; n.w = 0.00042 + ((i*97)%40)/100000; });
+let animOn = !reduceMotion;
+let tNow = 0;
+const fx = n => n.x + (animOn ? Math.sin(tNow*n.w + n.ph)*n.amp : 0);
+const fy = n => n.y + (animOn ? Math.cos(tNow*n.w*0.9 + n.ph2)*n.amp : 0);
 
 const cv = document.getElementById('cv');
 const ctx = cv.getContext('2d');
@@ -110,7 +154,6 @@ let DPR = Math.min(2, devicePixelRatio||1), Wd=0, Ht=0;
 function resize(){ Wd=innerWidth; Ht=innerHeight; cv.width=Wd*DPR; cv.height=Ht*DPR; cv.style.width=Wd+'px'; cv.style.height=Ht+'px'; draw(); }
 addEventListener('resize', resize);
 
-/* 뷰 변환 */
 let k=0.8, tx=0, ty=0;
 function fitAll(){
   let minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9;
@@ -120,7 +163,6 @@ function fitAll(){
   tx=Wd/2-(minX+maxX)/2*k+110*Math.min(1,k); ty=Ht/2-(minY+maxY)/2*k;
 }
 
-/* 공간 그리드 (히트테스트) */
 const CELL=80, grid=new Map();
 N.forEach((n,i)=>{const key=(n.x/CELL|0)+','+(n.y/CELL|0); (grid.get(key)||grid.set(key,[]).get(key)).push(i);});
 function pick(px,py){
@@ -130,31 +172,26 @@ function pick(px,py){
   for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){
     const cell=grid.get((cx+dx)+','+(cy+dy)); if(!cell) continue;
     for(const i of cell){
-      const n=N[i], d=(n.x-gx)**2+(n.y-gy)**2, r=Math.max(n.r+4, 9/k);
+      const n=N[i], d=(n.x-gx)**2+(n.y-gy)**2, r=Math.max(n.r+5, 9/k);
       if(d<r*r && d<bd){bd=d; best=i;}
     }
   }
   return best;
 }
 
-/* 상태 */
 const clOn = G.clusters.map(()=>true);
-const show = [true,true,true]; // k: 0 char, 1 strong, 2 cl
+const show = [true,true,true];
 let selected=-1, hovered=-1;
-
-function neighborSet(i){
-  const s=new Set([i]); adj[i].forEach(a=>s.add(a.o)); return s;
-}
+function neighborSet(i){ const s=new Set([i]); adj[i].forEach(a=>s.add(a.o)); return s; }
 
 function draw(){
   ctx.setTransform(DPR,0,0,DPR,0,0);
-  ctx.fillStyle='#0e1220'; ctx.fillRect(0,0,Wd,Ht);
-  ctx.translate(tx*1, ty*1); ctx.scale(k,k);
+  ctx.fillStyle=T.ground; ctx.fillRect(0,0,Wd,Ht);
+  ctx.translate(tx, ty); ctx.scale(k,k);
   const focus = selected>=0?selected:(hovered>=0?hovered:-1);
   const nb = focus>=0?neighborSet(focus):null;
-  const vx0=(-tx)/k-50, vy0=(-ty)/k-50, vx1=(Wd-tx)/k+50, vy1=(Ht-ty)/k+50;
+  const vx0=(-tx)/k-60, vy0=(-ty)/k-60, vx1=(Wd-tx)/k+60, vy1=(Ht-ty)/k+60;
 
-  /* 엣지 */
   ctx.lineWidth=1/k;
   for(const [a,b,kind] of L){
     if(!show[kind]) continue;
@@ -162,22 +199,15 @@ function draw(){
     if(!clOn[na.c]||!clOn[nbn.c]) continue;
     if((na.x<vx0&&nbn.x<vx0)||(na.x>vx1&&nbn.x>vx1)||(na.y<vy0&&nbn.y<vy0)||(na.y>vy1&&nbn.y>vy1)) continue;
     let alpha = kind===1?0.5:(kind===0?0.30:0.16);
-    if(nb){ alpha = (nb.has(a)&&nb.has(b)&&(a===focus||b===focus)) ? 0.95 : 0.03; }
-    ctx.strokeStyle = kind===1?`rgba(95,126,203,${alpha})`:(kind===0?`rgba(70,80,122,${alpha})`:`rgba(70,80,122,${alpha*0.9})`);
-    ctx.beginPath(); ctx.moveTo(na.x,na.y); ctx.lineTo(nbn.x,nbn.y); ctx.stroke();
+    if(nb){ alpha = (a===focus||b===focus) ? 0.95 : 0.03; }
+    ctx.strokeStyle = kind===1?`rgba(${T.strong},${alpha})`:`rgba(${T.loose},${alpha})`;
+    ctx.beginPath(); ctx.moveTo(fx(na),fy(na)); ctx.lineTo(fx(nbn),fy(nbn)); ctx.stroke();
   }
-  /* 노드 */
   for(const n of N){
     if(n.x<vx0||n.x>vx1||n.y<vy0||n.y>vy1) continue;
     ctx.globalAlpha = clOn[n.c]?1:0.05;
-    ctx.fillStyle = PAL[n.c%PAL.length];
-    ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,6.2832); ctx.fill();
-  }
-  /* 포커스 오버레이 */
-  if(nb){
-    ctx.globalAlpha=1;
-    ctx.fillStyle='rgba(14,18,32,0.82)';
-    /* 어둡게 덮기: 별도 패스로 비이웃 노드 다시 어둡게 */
+    ctx.fillStyle = PAL(n.c);
+    ctx.beginPath(); ctx.arc(fx(n),fy(n),n.r,0,6.2832); ctx.fill();
   }
   ctx.globalAlpha=1;
   if(nb){
@@ -185,24 +215,22 @@ function draw(){
       const n=N[i];
       if(n.x<vx0||n.x>vx1||n.y<vy0||n.y>vy1) continue;
       if(nb.has(i)||!clOn[n.c]) continue;
-      ctx.fillStyle='rgba(14,18,32,0.86)';
-      ctx.beginPath(); ctx.arc(n.x,n.y,n.r+0.6,0,6.2832); ctx.fill();
+      ctx.fillStyle=T.dimFill;
+      ctx.beginPath(); ctx.arc(fx(n),fy(n),n.r+0.6,0,6.2832); ctx.fill();
     }
-    /* 이웃 노드 재강조 */
     for(const i of nb){
       const n=N[i]; if(!clOn[n.c]) continue;
-      ctx.fillStyle=PAL[n.c%PAL.length];
-      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,6.2832); ctx.fill();
+      ctx.fillStyle=PAL(n.c);
+      ctx.beginPath(); ctx.arc(fx(n),fy(n),n.r,0,6.2832); ctx.fill();
     }
     const f=N[focus];
-    ctx.strokeStyle='#ffffff'; ctx.lineWidth=2/k;
-    ctx.beginPath(); ctx.arc(f.x,f.y,f.r+2/k,0,6.2832); ctx.stroke();
+    ctx.strokeStyle=T.ring; ctx.lineWidth=2/k;
+    ctx.beginPath(); ctx.arc(fx(f),fy(f),f.r+2/k,0,6.2832); ctx.stroke();
   }
-  /* 라벨 */
   const showAll = k>=0.9;
   const degMin = showAll?0:3;
   ctx.textAlign='center'; ctx.textBaseline='top';
-  ctx.lineWidth=3/k; ctx.strokeStyle='rgba(14,18,32,0.9)';
+  ctx.lineWidth=3/k; ctx.strokeStyle=T.ground;
   for(let i=0;i<N.length;i++){
     const n=N[i];
     if(n.x<vx0||n.x>vx1||n.y<vy0||n.y>vy1) continue;
@@ -212,20 +240,37 @@ function draw(){
     if(!nb && n.deg<degMin && !showAll) continue;
     const fs=(n.deg>=8?13:11)/k;
     if(fs*k<7) continue;
-    ctx.font=`500 ${fs}px 'IBM Plex Sans KR','Malgun Gothic',sans-serif`;
-    ctx.fillStyle='#c9d1e8';
-    ctx.strokeText(n.id, n.x, n.y+n.r+3/k);
-    ctx.fillText(n.id, n.x, n.y+n.r+3/k);
+    ctx.font=`500 ${fs}px SimSun,'宋体','Songti SC','Noto Serif SC',serif`;
+    ctx.fillStyle=T.label;
+    ctx.strokeText(n.id, fx(n), fy(n)+n.r+3/k);
+    ctx.fillText(n.id, fx(n), fy(n)+n.r+3/k);
   }
   ctx.setTransform(1,0,0,1,0,0);
 }
 
-/* 팬/줌 */
+/* 부유 애니메이션 루프 (30fps, 저사양 자동 강등, 탭 숨김 시 정지) */
+let lastFrame=0, slowCount=0;
+function loop(ts){
+  if(!animOn) return;
+  requestAnimationFrame(loop);
+  if(ts-lastFrame < 33) return;
+  lastFrame = ts; tNow = ts;
+  const t0 = performance.now();
+  draw();
+  const dt = performance.now()-t0;
+  if(dt>34){ if(++slowCount>45){ animOn=false; draw(); } } else if(slowCount>0) slowCount--;
+}
+if(animOn) requestAnimationFrame(loop);
+document.addEventListener('visibilitychange', ()=>{
+  if(document.hidden) return;
+  if(animOn){ lastFrame=0; requestAnimationFrame(loop); }
+});
+
 let dragging=false, lx=0, ly=0, moved=0;
 cv.addEventListener('pointerdown', e=>{dragging=true; moved=0; lx=e.clientX; ly=e.clientY; cv.classList.add('drag'); cv.setPointerCapture(e.pointerId);});
 cv.addEventListener('pointermove', e=>{
-  if(dragging){ tx+=e.clientX-lx; ty+=e.clientY-ly; moved+=Math.abs(e.clientX-lx)+Math.abs(e.clientY-ly); lx=e.clientX; ly=e.clientY; draw(); }
-  else { const h=pick(e.clientX,e.clientY); if(h!==hovered){hovered=h; draw();} }
+  if(dragging){ tx+=e.clientX-lx; ty+=e.clientY-ly; moved+=Math.abs(e.clientX-lx)+Math.abs(e.clientY-ly); lx=e.clientX; ly=e.clientY; if(!animOn) draw(); }
+  else { const h=pick(e.clientX,e.clientY); if(h!==hovered){hovered=h; if(!animOn) draw();} }
 });
 cv.addEventListener('pointerup', e=>{
   dragging=false; cv.classList.remove('drag');
@@ -236,12 +281,12 @@ cv.addEventListener('wheel', e=>{
   const f = Math.exp(-e.deltaY*0.0015);
   const nk = Math.min(6, Math.max(0.15, k*f));
   tx = e.clientX-(e.clientX-tx)*(nk/k); ty = e.clientY-(e.clientY-ty)*(nk/k);
-  k=nk; draw();
+  k=nk; if(!animOn) draw();
 },{passive:false});
 
-/* 선택/패널 */
+function paintPanelDot(){ if(selected>=0) document.getElementById('pDot').style.background=PAL(N[selected].c); }
 function select(i){
-  selected=i; draw();
+  selected=i; if(!animOn) draw();
   const panel=document.getElementById('panel');
   if(i<0){panel.classList.remove('on'); return;}
   const n=N[i];
@@ -249,7 +294,7 @@ function select(i){
   document.getElementById('pPy').textContent=n.py;
   document.getElementById('pMean').textContent=n.m;
   document.getElementById('pCl').textContent=G.clusters[n.c]+' · 연결 '+n.deg+'개';
-  document.getElementById('pDot').style.background=PAL[n.c%PAL.length];
+  paintPanelDot();
   const box=document.getElementById('pLinks'); box.innerHTML='';
   const groups={1:[],0:[],2:[]};
   adj[i].forEach(a=>groups[a.k].push(a));
@@ -274,34 +319,35 @@ function focusNode(i){
   const n=N[i]; selected=i;
   const nk=Math.max(k,1.6);
   tx=Wd/2-n.x*nk; ty=Ht/2-n.y*nk; k=nk;
-  select(i);
+  select(i); if(!animOn) draw();
 }
 document.getElementById('close').onclick=()=>select(-1);
 
-/* 범례 */
 const counts=G.clusters.map(()=>0); N.forEach(n=>counts[n.c]++);
 const legend=document.getElementById('legend');
 G.clusters.forEach((c,i)=>{
   const b=document.createElement('button'); b.className='chip';
-  b.innerHTML=`<span class="dot" style="background:${PAL[i%PAL.length]}"></span>${c}<span class="n">${counts[i]}</span>`;
-  b.onclick=()=>{clOn[i]=!clOn[i]; b.classList.toggle('off',!clOn[i]); draw();};
+  b.innerHTML=`<span class="dot" data-ci="${i}"></span>${c}<span class="n">${counts[i]}</span>`;
+  b.onclick=()=>{clOn[i]=!clOn[i]; b.classList.toggle('off',!clOn[i]); if(!animOn) draw();};
   legend.appendChild(b);
 });
+function refreshLegendColors(){
+  legend.querySelectorAll('.dot[data-ci]').forEach(d=>{ d.style.background = PAL(+d.dataset.ci); });
+}
 document.getElementById('resetC').onclick=()=>{
   G.clusters.forEach((c,i)=>clOn[i]=true);
   legend.querySelectorAll('.chip').forEach(x=>x.classList.remove('off'));
-  draw();
+  if(!animOn) draw();
 };
 document.getElementById('offC').onclick=()=>{
   G.clusters.forEach((c,i)=>clOn[i]=false);
   legend.querySelectorAll('.chip').forEach(x=>x.classList.add('off'));
-  draw();
+  if(!animOn) draw();
 };
-document.getElementById('t0').onchange=e=>{show[0]=e.target.checked; draw();};
-document.getElementById('t1').onchange=e=>{show[1]=e.target.checked; draw();};
-document.getElementById('t2').onchange=e=>{show[2]=e.target.checked; draw();};
+document.getElementById('t0').onchange=e=>{show[0]=e.target.checked; if(!animOn) draw();};
+document.getElementById('t1').onchange=e=>{show[1]=e.target.checked; if(!animOn) draw();};
+document.getElementById('t2').onchange=e=>{show[2]=e.target.checked; if(!animOn) draw();};
 
-/* 검색 */
 const searchEl=document.getElementById('search'), hits=document.getElementById('hits');
 const strip=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
 searchEl.addEventListener('input', ()=>{
@@ -320,7 +366,8 @@ searchEl.addEventListener('input', ()=>{
   });
 });
 
-resize(); fitAll(); draw();
+resize(); fitAll(); applyTheme();
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(()=>draw());}
 </script>
 
 </body>
