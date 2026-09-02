@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HSK 어휘 그래프</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=Gowun+Batang:wght@700&display=swap">
+<style>
+  :root{--ground:#0e1220; --panel:#151a2a; --line:#28304d; --ink:#e8ebf5; --muted:#8e97b2; --accent:#8ab4ff;}
+  body{margin:0; min-height:100vh; background:var(--ground); color:var(--ink);
+    font-family:'IBM Plex Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+    display:flex; align-items:center; justify-content:center; padding:40px 20px; box-sizing:border-box;}
+  main{max-width:860px; width:100%;}
+  h1{font-family:'Gowun Batang',serif; font-weight:700; font-size:clamp(26px,5vw,38px); margin:0 0 8px; letter-spacing:.5px;}
+  .sub{color:var(--muted); font-size:14.5px; margin:0 0 34px; line-height:1.7;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px;}
+  a.card{display:block; background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px 18px 16px; text-decoration:none; color:var(--ink); transition:border-color .15s, transform .15s;}
+  a.card:hover, a.card:focus-visible{border-color:var(--accent); transform:translateY(-2px); outline:none;}
+  .lv{font-size:20px; font-weight:600; display:flex; align-items:center; gap:9px;}
+  .dot{width:11px; height:11px; border-radius:50%; flex:none;}
+  .meta{color:var(--muted); font-size:12.5px; margin-top:7px; font-variant-numeric:tabular-nums;}
+  footer{color:#5d668a; font-size:11.5px; margin-top:36px; line-height:1.7;}
+</style>
+</head>
+<body>
+<main>
+  <h1>HSK 어휘 그래프</h1>
+  <p class="sub">HSK 3.0 급수별 어휘를 연결망으로 탐험하는 지도입니다. 단어를 클릭하면 짝꿍 표현·같은 갈래·같은 한자를 쓰는 단어들이 이어지고,
+  검색창에 한국어 뜻만 입력해도 단어를 찾을 수 있습니다. 급수를 선택하세요.</p>
+  <div class="grid">
+    <a class="card" href="hsk1.html"><span class="lv"><span class="dot" style="background:#7fb2ff"></span>1급</span><span class="meta">단어 300 · 연결 345</span></a>
+    <a class="card" href="hsk2.html"><span class="lv"><span class="dot" style="background:#ffd166"></span>2급</span><span class="meta">단어 200 · 연결 186</span></a>
+    <a class="card" href="hsk3.html"><span class="lv"><span class="dot" style="background:#ff8fa3"></span>3급</span><span class="meta">단어 500 · 연결 496</span></a>
+    <a class="card" href="hsk4.html"><span class="lv"><span class="dot" style="background:#6fe3c1"></span>4급</span><span class="meta">단어 1,000 · 연결 1,109</span></a>
+    <a class="card" href="hsk5.html"><span class="lv"><span class="dot" style="background:#b7a6ff"></span>5급</span><span class="meta">단어 1,600 · 연결 1,956</span></a>
+    <a class="card" href="hsk6.html"><span class="lv"><span class="dot" style="background:#ffa96b"></span>6급</span><span class="meta">단어 1,800 · 연결 2,183</span></a>
+    <a class="card" href="hsk7-9.html"><span class="lv"><span class="dot" style="background:#f97f9f"></span>7~9급</span><span class="meta">단어 5,600 · 연결 8,382</span></a>
+  </div>
+  <footer>어휘 기준: 《HSK考试大纲》(2025-11 발표 · 2026-12 정식 시행) 급수별 어휘표 전수.<br>
+  연결: 강한 연결(짝꿍·같은 갈래) / 어소 연결(한자 공유) / 클러스터 소속선.</footer>
+</main>
+</body>
+</html>
