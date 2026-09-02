@@ -230,7 +230,8 @@ function draw(){
   const showAll = k>=1.2;
   const degMin = showAll?0:5;
   ctx.textAlign='center'; ctx.textBaseline='top';
-  ctx.lineWidth=3/k; ctx.strokeStyle=T.ground;
+  const lk=Math.min(k,1);
+  ctx.lineWidth=3/lk; ctx.strokeStyle=T.ground;
   for(let i=0;i<N.length;i++){
     const n=N[i];
     if(n.x<vx0||n.x>vx1||n.y<vy0||n.y>vy1) continue;
@@ -238,12 +239,12 @@ function draw(){
     const isNb = nb?nb.has(i):false;
     if(nb && !isNb) continue;
     if(!nb && n.deg<degMin && !showAll) continue;
-    const fs=(n.deg>=8?13:11)/k;
+    const fs=(n.deg>=8?13:11)/lk;
     if(fs*k<7) continue;
     ctx.font=`500 ${fs}px SimSun,'宋体','Songti SC','Noto Serif SC',serif`;
     ctx.fillStyle=T.label;
-    ctx.strokeText(n.id, fx(n), fy(n)+n.r+3/k);
-    ctx.fillText(n.id, fx(n), fy(n)+n.r+3/k);
+    ctx.strokeText(n.id, fx(n), fy(n)+n.r+3/lk);
+    ctx.fillText(n.id, fx(n), fy(n)+n.r+3/lk);
   }
   ctx.setTransform(1,0,0,1,0,0);
 }
